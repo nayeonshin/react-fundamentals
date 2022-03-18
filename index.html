@@ -12,88 +12,59 @@
     <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-      const TimeConverter = () => {
-        const [time, setTime] = React.useState(0);
+      const Converter = ({ value }) => {
+        const [amount, setAmount] = React.useState(0);
         const [isInverted, setIsInverted] = React.useState(false);
 
         const onChange = (event) => {
-          setTime(event.target.value);
+          setAmount(event.target.value);
         };
 
-        const reset = () => setTime(0);
+        const reset = () => setAmount(0);
         const invert = () => {
           reset();
           setIsInverted((current) => !current);
         };
 
-        return (
-          <div>
-            <div>
-              <label htmlFor="minute">Minutes</label>
-              <input
-                disabled={isInverted}
-                id="minute"
-                onChange={onChange}
-                placeholder="Minutes"
-                type="number"
-                value={isInverted ? time * 60 : time}
-              />
-            </div>
-            <div>
-              <label htmlFor="hour">Hours</label>
-              <input
-                disabled={!isInverted}
-                id="hour"
-                onChange={onChange}
-                placeholder="Hours"
-                type="number"
-                value={isInverted ? time : Math.round(time / 60)}
-              />
-            </div>
-            <button onClick={reset}>Reset</button>
-            <button onClick={invert}>
-              {isInverted ? "Turn back" : "Invert"}
-            </button>
-          </div>
-        );
-      };
+        const isTimeSelected = value === "0";
+        const timeAttributes = ["minute", "Minutes", "hour", "Hours"];
+        const distanceAttributes = ["km", "Km", "mile", "Miles"];
+        const [firstId, firstText, secondId, secondText] = isTimeSelected
+          ? timeAttributes
+          : distanceAttributes;
 
-      const DistanceConverter = () => {
-        const [distance, setDistance] = React.useState(0);
-        const [isInverted, setIsInverted] = React.useState(false);
-
-        const onChange = (event) => {
-          setDistance(event.target.value);
+        const convertFirstToSecond = (amount) => {
+          return isTimeSelected ? amount * 60 : Math.round(amount * 1.609344);
         };
 
-        const reset = () => setDistance(0);
-        const invert = () => {
-          reset();
-          setIsInverted((current) => !current);
+        const convertSecondToFirst = (amount) => {
+          return isTimeSelected
+            ? Math.round(amount / 60)
+            : Math.round(amount * 0.62137);
         };
 
         return (
           <div>
             <div>
-              <label htmlFor="km">Km</label>
+              <label htmlFor={firstId}>{firstText}</label>
               <input
                 disabled={isInverted}
-                id="km"
+                id={firstId}
                 onChange={onChange}
-                placeholder="Km"
+                placeholder="0"
                 type="number"
-                value={isInverted ? Math.round(distance * 1.609344) : distance}
+                value={isInverted ? convertFirstToSecond(amount) : amount}
               />
             </div>
             <div>
-              <label htmlFor="mile">Miles</label>
+              <label htmlFor={secondId}>{secondText}</label>
               <input
                 disabled={!isInverted}
-                id="mile"
+                id={secondId}
                 onChange={onChange}
-                placeholder="Miles"
+                placeholder="0"
                 type="number"
-                value={isInverted ? distance : Math.round(distance * 0.62137)}
+                value={isInverted ? amount : convertSecondToFirst(amount)}
               />
             </div>
             <button onClick={reset}>Reset</button>
@@ -120,9 +91,11 @@
               <option value="1">Km & Miles</option>
             </select>
             <hr />
-            {value === "-1" ? "Please select your units" : null}
-            {value === "0" ? <TimeConverter /> : null}
-            {value === "1" ? <DistanceConverter /> : null}
+            {value === "-1" ? (
+              "Please select your units"
+            ) : (
+              <Converter value={value} />
+            )}
           </div>
         );
       };
