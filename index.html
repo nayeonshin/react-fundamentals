@@ -29,23 +29,22 @@
         const timeAttributes = ["minute", "Minutes", "hour", "Hours"];
         const distanceAttributes = ["km", "Km", "mile", "Miles"];
 
-        let firstId;
-        let firstText;
-        let secondId;
-        let secondText;
-
-        let convertFirstToSecond;
-        let convertSecondToFirst;
-
-        if (value === "0") {
-          [firstId, firstText, secondId, secondText] = timeAttributes;
-          convertFirstToSecond = (amount) => amount * 60;
-          convertSecondToFirst = (amount) => Math.round(amount / 60);
-        } else {
-          [firstId, firstText, secondId, secondText] = distanceAttributes;
-          convertFirstToSecond = (amount) => Math.round(amount * 1.609344);
-          convertSecondToFirst = (amount) => Math.round(amount * 0.62137);
-        }
+        const [
+          [firstId, firstText, secondId, secondText],
+          convertFirstToSecond,
+          convertSecondToFirst,
+        ] =
+          value === "0"
+            ? [
+                timeAttributes,
+                (amount) => amount * 60,
+                (amount) => Math.round(amount / 60),
+              ]
+            : [
+                distanceAttributes,
+                (amount) => Math.round(amount * 1.609344),
+                (amount) => Math.round(amount * 0.62137),
+              ];
 
         return (
           <div>
