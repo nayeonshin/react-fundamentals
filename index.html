@@ -26,8 +26,8 @@
           setIsInverted((current) => !current);
         };
 
-        const timeAttributes = ["minute", "Minutes", "hour", "Hours"];
-        const distanceAttributes = ["km", "Km", "mile", "Miles"];
+        const timeValues = ["minute", "Minutes", "hour", "Hours"];
+        const distanceValues = ["km", "Km", "mile", "Miles"];
 
         const [
           [firstId, firstText, secondId, secondText],
@@ -36,12 +36,12 @@
         ] =
           value === "0"
             ? [
-                timeAttributes,
+                timeValues,
                 (amount) => amount * 60,
                 (amount) => Math.round(amount / 60),
               ]
             : [
-                distanceAttributes,
+                distanceValues,
                 (amount) => Math.round(amount * 1.609344),
                 (amount) => Math.round(amount * 0.62137),
               ];
