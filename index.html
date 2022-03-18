@@ -12,89 +12,28 @@
     <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
-      const Converter = ({ value }) => {
-        const [amount, setAmount] = React.useState(0);
-        const [isInverted, setIsInverted] = React.useState(false);
-
-        const onChange = (event) => {
-          setAmount(event.target.value);
-        };
-
-        const reset = () => setAmount(0);
-        const invert = () => {
-          reset();
-          setIsInverted((current) => !current);
-        };
-
-        const timeValues = ["minute", "Minutes", "hour", "Hours"];
-        const distanceValues = ["km", "Km", "mile", "Miles"];
-
-        const [
-          [firstId, firstText, secondId, secondText],
-          convertFirstToSecond,
-          convertSecondToFirst,
-        ] =
-          value === "0"
-            ? [timeValues, (time) => time * 60, (time) => Math.round(time / 60)]
-            : [
-                distanceValues,
-                (distance) => Math.round(distance * 1.609344),
-                (distance) => Math.round(distance * 0.62137),
-              ];
-
+      function Button({ text, isBig }) {
         return (
-          <div>
-            <div>
-              <label htmlFor={firstId}>{firstText}</label>
-              <input
-                disabled={isInverted}
-                id={firstId}
-                onChange={onChange}
-                placeholder="0"
-                type="number"
-                value={isInverted ? convertFirstToSecond(amount) : amount}
-              />
-            </div>
-            <div>
-              <label htmlFor={secondId}>{secondText}</label>
-              <input
-                disabled={!isInverted}
-                id={secondId}
-                onChange={onChange}
-                placeholder="0"
-                type="number"
-                value={isInverted ? amount : convertSecondToFirst(amount)}
-              />
-            </div>
-            <button onClick={reset}>Reset</button>
-            <button onClick={invert}>
-              {isInverted ? "Turn back" : "Invert"}
-            </button>
-          </div>
+          <button
+            style={{
+              backgroundColor: "tomato",
+              border: 0,
+              borderRadius: 10,
+              color: "white",
+              fontSize: isBig ? 18 : 16,
+              padding: "10px 20px",
+            }}
+          >
+            {text}
+          </button>
         );
-      };
+      }
 
       const App = () => {
-        const [value, setValue] = React.useState("-1");
-
-        const onSelect = (event) => {
-          setValue(event.target.value);
-        };
-
         return (
           <div>
-            <h1>Unit Converter</h1>
-            <select value={value} onChange={onSelect}>
-              <option value="-1">Select your units</option>
-              <option value="0">Minutes & Hours</option>
-              <option value="1">Km & Miles</option>
-            </select>
-            <hr />
-            {value === "-1" ? (
-              "Please select your units"
-            ) : (
-              <Converter value={value} />
-            )}
+            <Button text="Save Changes" isBig={true} />
+            <Button text="Continue" isBig={false} />
           </div>
         );
       };
