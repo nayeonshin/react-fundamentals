@@ -26,22 +26,26 @@
           setIsInverted((current) => !current);
         };
 
-        const isTimeSelected = value === "0";
         const timeAttributes = ["minute", "Minutes", "hour", "Hours"];
         const distanceAttributes = ["km", "Km", "mile", "Miles"];
-        const [firstId, firstText, secondId, secondText] = isTimeSelected
-          ? timeAttributes
-          : distanceAttributes;
 
-        const convertFirstToSecond = (amount) => {
-          return isTimeSelected ? amount * 60 : Math.round(amount * 1.609344);
-        };
+        let firstId;
+        let firstText;
+        let secondId;
+        let secondText;
 
-        const convertSecondToFirst = (amount) => {
-          return isTimeSelected
-            ? Math.round(amount / 60)
-            : Math.round(amount * 0.62137);
-        };
+        let convertFirstToSecond;
+        let convertSecondToFirst;
+
+        if (value === "0") {
+          [firstId, firstText, secondId, secondText] = timeAttributes;
+          convertFirstToSecond = (amount) => amount * 60;
+          convertSecondToFirst = (amount) => Math.round(amount / 60);
+        } else {
+          [firstId, firstText, secondId, secondText] = distanceAttributes;
+          convertFirstToSecond = (amount) => Math.round(amount * 1.609344);
+          convertSecondToFirst = (amount) => Math.round(amount * 0.62137);
+        }
 
         return (
           <div>
