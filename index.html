@@ -35,15 +35,11 @@
           convertSecondToFirst,
         ] =
           value === "0"
-            ? [
-                timeValues,
-                (amount) => amount * 60,
-                (amount) => Math.round(amount / 60),
-              ]
+            ? [timeValues, (time) => time * 60, (time) => Math.round(time / 60)]
             : [
                 distanceValues,
-                (amount) => Math.round(amount * 1.609344),
-                (amount) => Math.round(amount * 0.62137),
+                (distance) => Math.round(distance * 1.609344),
+                (distance) => Math.round(distance * 0.62137),
               ];
 
         return (
